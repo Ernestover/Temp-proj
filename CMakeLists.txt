@@ -34,19 +34,22 @@ project(temp_monitor C CXX ASM)
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
-
-add_executable(temp_monitor temp_monitor.c )
+add_executable(${PROJECT_NAME}
+    main.c
+)
 
 pico_set_program_name(temp_monitor "temp_monitor")
 pico_set_program_version(temp_monitor "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(temp_monitor 0)
-pico_enable_stdio_usb(temp_monitor 0)
+pico_enable_stdio_usb(temp_monitor 1)
 
 # Add the standard library to the build
 target_link_libraries(temp_monitor
-        pico_stdlib)
+        pico_stdlib
+        hardware_i2c
+)
 
 # Add the standard include files to the build
 target_include_directories(temp_monitor PRIVATE
@@ -59,4 +62,5 @@ target_link_libraries(temp_monitor
         )
 
 pico_add_extra_outputs(temp_monitor)
+
 
