@@ -1,0 +1,3 @@
+[submodule "libraries/Pico-I2C-LCD"]
+	path = libraries/Pico-I2C-LCD
+	url = https://github.com/cristiancristea00/Pico-I2C-LCD.git
