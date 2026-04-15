@@ -86,11 +86,13 @@ int main()
         {
             float fahrenheit = (reading.temp_celsius * 9 / 5) + 32;
             lcd_set_cursor(1,0);
-            lcd_printf("Humidity = %.1d%% ", (int)reading.humidity);
+           lcd_print("                    "); // clear line 1 
+           lcd_set_cursor(1,0);
+            lcd_printf("Humidity = %d%% ", (int)reading.humidity);
             lcd_set_cursor(2,0);
             lcd_print("                    "); // clear line 2 
             lcd_set_cursor(2,0);
-            lcd_printf("Temperature = %.1dC (%.1fF)", (int)reading.temp_celsius, fahrenheit);
+            lcd_printf("Temperature = %dC (%.1fF)", (int)reading.temp_celsius, fahrenheit);
         }
        else 
        {
@@ -204,7 +206,9 @@ void read_dht(dht_reading *result)
     gpio_put(DHT_PIN, 0);
     sleep_ms(25);
     gpio_put(DHT_PIN, 1);
-    sleep_us(100);
+    sleep_us(30);
+    gpio_set_dir(DHT_PIN, GPIO_IN);
+    sleep_us(40); // let sensor respond 
    if (gpio_get(DHT_PIN) == 0)
    {
     lcd_set_cursor(3,0);
@@ -215,7 +219,6 @@ void read_dht(dht_reading *result)
     lcd_set_cursor(3,0);
     lcd_printf("No response ");
    }
-    gpio_set_dir(DHT_PIN, GPIO_IN);
 
     for (uint i = 0; i < MAX_TIMINGS; i++) 
     {
@@ -242,8 +245,8 @@ void read_dht(dht_reading *result)
         }
     }
 
-   // lcd_set_cursor(3,0);
-    //lcd_printf("bits read: %d,", j);
+    lcd_set_cursor(3,0);
+    lcd_printf("bits read: %d,", j);
    
     if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF)))
     {
