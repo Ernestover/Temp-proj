@@ -11,6 +11,26 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
+/*
+* Hardware Connections:
+* -------------------------------------------------------------------------
+* Pico Pin      |  Component      |  Pin Type  |  Description
+* -------------------------------------------------------------------------
+* VBUS (40)     |  LCD VCC        |  5V Power  |  Power for LCD Backlight
+* 3V3 (36)      |  DHT11 VCC      |  3.3V Out  |  Power for Sensor
+* GND (38)      |  GND Rail       |  Ground    |  Common Ground
+* GPIO 22 (29)  |  DHT11 Data     |  I/O       |  One-Wire Data (S-Pin)
+* GPIO 26 (31)  |  LCD I2C SDA    |  I2C1 SDA  |  Data line for LCD
+* GPIO 27 (32)  |  LCD I2C SCL    |  I2C1 SCL  |  Clock line for LCD
+* -------------------------------------------------------------------------
+*
+* DHT11 Module (3-pin):           LCD I2C Backpack:
+* [ S ] -> GPIO 22                [ GND ] -> GND
+* [ + ] -> 3.3V                   [ VCC ] -> 5V (VBUS)
+* [ - ] -> GND                    [ SDA ] -> GPIO 26
+*                                 [ SCL ] -> GPIO 27
+*/
+
 // I2C port and pins
 #define I2C_PORT i2c1
 #define I2C_SDA  26
@@ -117,7 +137,12 @@ int main()
 }
 
 
-// I2C Functions
+/*----------------------------------------------- I2C FUNCTIONS -----------------------------------------------*/
+/**
+ * @brief Initializes the I2C1 peripheral and configures the SDA/SCL pins.
+ * Sets the baud rate to 100kHz and enables internal pull-up resistors for 
+ * * communication with the LCD backpack.
+ */
 void i2c_init_pico(void) 
 {
     i2c_init(I2C_PORT, 50000); // 100 kHz
@@ -127,12 +152,23 @@ void i2c_init_pico(void)
     gpio_pull_up(I2C_SCL);
 }
 
+/**
+ * @brief Sends a single byte of data over the I2C bus to the LCD address.
+ * @param data The 8-bit value to be sent ot the PCF8574 backpack
+ */
 void i2c_send_byte(uint8_t data) 
 {
     uint8_t buf[1] = { data };
     i2c_write_blocking(I2C_PORT, LCD_ADDR, buf, 1, false);
 }
 
+/**
+ * @brief Sends a 4-bit nibble to the LCD in 4-bit mode.
+ * Packages the nibble with backlight and control bits, then toggles the
+ * * Enable (EN) pin to latch the data. 
+ * @param nibble The upper 4 bits containing the command or data. 
+ * @param mode The register select (RS) bit (0 for command, 1 for data).
+ */
 void lcd_send_nibble(uint8_t nibble, uint8_t mode) 
 {
     uint8_t data = nibble | LCD_BACKLIGHT | mode;
@@ -145,18 +181,30 @@ void lcd_send_nibble(uint8_t nibble, uint8_t mode)
     sleep_us(50);
 }
 
+/**
+ * @brief Sends a full 8-bit command to the LCD controller.
+ * @param cmd The command byte (e.g., clear display, set cursor).
+ */
 void lcd_send_command(uint8_t cmd) 
 {
     lcd_send_nibble(cmd & 0xF0, 0);            // high nibble, RS=0
     lcd_send_nibble((cmd << 4) & 0xF0, 0);     // low nibble, RS=0
 }
 
+/**
+ * @brief Sends a full 8-bit data byte (character) to be displayed to the LCD.
+ * @param data the ASCII character to display. 
+ */
 void lcd_send_data(uint8_t data) 
 {
     lcd_send_nibble(data & 0xF0, LCD_RS);        // high nibble, RS=1
     lcd_send_nibble((data << 4) & 0xF0, LCD_RS); // low nibble, RS=1
 }
-
+/**
+ * @brief Executes the initialization sequence for 20x4 LCD.
+ * Sets the display to 4-bit mode, enables the display, clears existing 
+ * * content, and sets the entry mode. 
+ */
 void lcd_init(void) 
 {
     sleep_ms(50); // wait for LCD power up
@@ -179,6 +227,10 @@ void lcd_init(void)
     lcd_send_command(0x06);
 }
 
+/**
+ * @brief Displays a string of text on the LCD at the current cursor position.
+ * @param text Pointer to a null_terminated string.
+ */
 void lcd_print(const char *text) 
 {
     while (*text) 
@@ -187,6 +239,10 @@ void lcd_print(const char *text)
     }
 }
 
+/**
+ * @brief Formats and prints a string to the LCD, similar to standard printf.
+ * @param fmt Format string followed by variable arguments.
+ */
 void lcd_printf(const char *fmt, ...) 
 {
     char buffer[64];
@@ -198,6 +254,11 @@ void lcd_printf(const char *fmt, ...)
     lcd_print(buffer);
 }
 
+/**
+ * @brief Moves the LCD cursor to a specific row and column.
+ * @param row The target row (0 to 3).
+ * @param col The target column (0 to 19).
+ */
 void lcd_set_cursor(uint8_t row, uint8_t col) 
 {
     uint8_t row_offsets[] = {0x00, 0x40, 0x14, 0x54};
@@ -206,7 +267,14 @@ void lcd_set_cursor(uint8_t row, uint8_t col)
 }
 
 
-// Dht11 Function
+/**
+ * @brief Reads temperature and humidity data from the DHT11 sensor.
+ * Manages the high-precision "One-Wire" timing protocol by sending a 
+ * * start signal and timing the response pulses from the sensor.
+ * Includes checksum verification to ensure data integrity.
+ * @param result Pointer to a dht_reading struct where the parsed values 
+ * * will be stored. 
+ */
 void read_dht(dht_reading *result) 
 {
     int data[5] = {0, 0, 0, 0, 0};
