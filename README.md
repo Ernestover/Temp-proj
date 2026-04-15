@@ -31,7 +31,7 @@ The DHT11 uses a proprietary single-bus protocol that is highly timing-sensitive
 4. Checksum: Validating the data integrity using the 8-bit sum of the humidity and temperature bytes.
 
 ## Documentation Style 
-
+https://github.com/Ernestover/Temp-proj/blob/d8f4e93dd18370ff22872c55550aaa901e07c712/main.c#L242-L255
 
 # Setup & Build 
 1. Ensure the Pico C/C++ Sdk is installed 
