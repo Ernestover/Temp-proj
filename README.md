@@ -43,3 +43,20 @@ https://github.com/Ernestover/Temp-proj/blob/d8f4e93dd18370ff22872c55550aaa901e0
 4. Flash the resulting .uf2 file to your Pico 
 
 
+## Skills Demonstrated
+
+---
+
+![Embedded Systems](https://img.shields.io/badge/Embedded_Systems-333333?style=for-the-badge)
+![Firmware Development](https://img.shields.io/badge/Firmware_Development-333333?style=for-the-badge)
+![C](https://img.shields.io/badge/C-333333?style=for-the-badge)
+![I2C Protocol](https://img.shields.io/badge/I2C_Protocol-333333?style=for-the-badge)
+![One--Wire Protocol](https://img.shields.io/badge/One--Wire_Protocol-333333?style=for-the-badge)
+![Real--Time Systems](https://img.shields.io/badge/Real--Time_Systems-333333?style=for-the-badge)
+![Hardware Debugging](https://img.shields.io/badge/Hardware_Debugging-333333?style=for-the-badge)
+![GPIO Programming](https://img.shields.io/badge/GPIO_Programming-333333?style=for-the-badge)
+![Checksum Validation](https://img.shields.io/badge/Checksum_Validation-333333?style=for-the-badge)
+![CMake Build Systems](https://img.shields.io/badge/CMake_Build_Systems-333333?style=for-the-badge)
+![ARM GCC Toolchain](https://img.shields.io/badge/ARM_GCC_Toolchain-333333?style=for-the-badge)
+
+
