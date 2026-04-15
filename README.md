@@ -37,9 +37,6 @@ https://github.com/Ernestover/Temp-proj/blob/d8f4e93dd18370ff22872c55550aaa901e0
 1. Ensure the Pico C/C++ Sdk is installed 
 2. Clone this repositry and create a build directory 
 3. Run Cmake:
-    mkdir build && cd build
-    cmake .. 
-    make 
 4. Flash the resulting .uf2 file to your Pico 
 
 
