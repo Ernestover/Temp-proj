@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Temp-proj
 Using a microcontroller to sense temperature and humdity in a room and display it to a LCD screen using I2C
 
@@ -8,7 +8,7 @@ Using a microcontroller to sense temperature and humdity in a room and display i
 - Led Screen: 20x4 I2C display module 
 - Temperature sensor: DHT11 (3-pin)
 - male to male jumper wires 
-=======
+
 # Raspberry Pi Pico: Real-Time Environment Monitor
 A high-precision C-based embedded system that interfaces a Raspberry Pi Pico with a DHT11 sensor and a 20x4 I2C LCD to provide live temperature and humidity telemetry.
 
@@ -52,4 +52,4 @@ The DHT11 uses a proprietary single-bus protocol that is highly timing-sensitive
     make 
 4. Flash the resulting .uf2 file to your Pico 
 
->>>>>>> 4388f28 (updating readme)
+
