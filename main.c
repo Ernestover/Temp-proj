@@ -85,15 +85,6 @@ int main()
 
     tight_loop_contents();
     dht_reading reading;
-        
-   // read_dht(&reading);
-    //float fahrenheit = (reading.temp_celsius *9/5) + 32;
-    //lcd_set_cursor(1,0);
-    //lcd_printf("Humidity = %.1f%% ", reading.humidity);
-
-    //lcd_set_cursor(2,0);
-    //lcd_printf("Temperature = %.1fC (%.1fF)", reading.temp_celsius, fahrenheit);
-    //sleep_ms(2000);
 
     while(1)
     {
@@ -102,19 +93,22 @@ int main()
         {
             float fahrenheit = (reading.temp_celsius * 9 / 5) + 32;
             
+            // Line 1: Clear and Update Humidity 
             lcd_set_cursor(1,0);
-            lcd_print("                    "); // clear line 1 
-            lcd_set_cursor(1,0);
-            lcd_printf("Humidity = %d%% ", (int)reading.humidity);
+            lcd_printf("Humidity = %3d%% ", (int)reading.humidity);
+
+            // Line 2: Clear and Update Temperature
             lcd_set_cursor(2,0);
-            lcd_print("                    "); // clear line 2 
-            lcd_set_cursor(2,0);
-            lcd_printf("Temperature = %dC (%.1fF)", (int)reading.temp_celsius, fahrenheit);
+            lcd_printf("Temp: = %3dC | %3.1fF", (int)reading.temp_celsius, fahrenheit);
+
+            // Line 3: clear the error/status line if a good reading happens
+            lcd_set_cursor(3,0);
+            lcd_print("Status: Ok       ");
         }
        else 
        {
-        lcd_set_cursor(1,0);
-        lcd_print("Bad DHT11 reading");
+        lcd_set_cursor(3,0);
+        lcd_print("Status: SENSOR ERR  ");
        }
        sleep_ms(2000);
     }
@@ -253,50 +247,6 @@ void read_dht(dht_reading *result)
             j++;
         }
     }
-//     // sleep_us(40); // let sensor respond 
-//    if (gpio_get(DHT_PIN) == 0)
-//    {
-//     lcd_set_cursor(3,0);
-//     lcd_printf("Got response ");
-//    }
-//    else 
-//    {
-//     lcd_set_cursor(3,0);
-//     lcd_printf("No response ");
-//    }
-
-//     for (uint i = 0; i < MAX_TIMINGS; i++) 
-//     {
-//         uint count = 0;
-//         while (gpio_get(DHT_PIN) == last) 
-//         {
-//             // count++;
-//             // sleep_us(1);
-//             absolute_time_t start = get_absolute_time();
-//             while (gpio_get(DHT_PIN)==last){
-//                 if (absolute_time_diff_us(start, get_absolute_time()) > 255) break;
-//             }
-//             uint32_t duration = absolute_time_diff_us(start, get_absolute_time());
-//             if (count == 255) break;
-           
-//         }
-    
-//         last = gpio_get(DHT_PIN);
-//         if (count == 255) break;
-
-//         if ((i >= 4) && (i % 2 == 0)) 
-//         {
-//             data[j / 8] <<= 1;
-//             if (count > 50) 
-//             {
-//                 data[j / 8] |= 1;
-//             }
-//             j++;
-//         }
-    
-    // Clear line 3 and show debug info 
-    // lcd_set_cursor(3,0);
-    // lcd_printf("bits: %d    ,", j);
     
     // 3. Verify Checksum
     if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF))) {
@@ -309,16 +259,4 @@ void read_dht(dht_reading *result)
         result -> temp_celsius = -100;
     }
 
-    // if ((j >= 40) && (data[4] == ((data[0] + data[1] + data[2] + data[3]) & 0xFF)))
-    // {
-    //     // DHT11: values are already whole numbers
-    //     result->humidity     = data[0];   // %RH (0–100)
-    //     result->temp_celsius = data[2];   // °C (0–50 typically)
-    // }
-    // else
-    // {
-    //     // mark as invalid reading
-    //     result->humidity = -1;
-    //     result->temp_celsius = -100;
-    // }
 }
