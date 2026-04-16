@@ -2,7 +2,7 @@
 # Raspberry Pi Pico: Real-Time Environment Monitor
 A high-precision C-based embedded system that interfaces a Raspberry Pi Pico with a DHT11 sensor and a 20x4 I2C LCD to provide live temperature and humidity telemetry.
 
-# Overview
+## Overview
 This project demonstrates low-level hardware communication using the Raspberry Pi Pico C/C++ SDK. It features a custom implementation of the DHT11 "One-Wire" protocol and I2C communication to drive a 20x4 character display via a PCF8574 GPIO expander.
 
 ## Key Features
@@ -11,15 +11,15 @@ This project demonstrates low-level hardware communication using the Raspberry P
 - Real-Time Processing: Continuous data polling with a 2-second sampling rate to ensure sensor stability.
 - Error Handling: Checksum verification and hardware "GPIO OK" self-test during boot.
 
-# Hardware Requirements 
+## Hardware Requirements 
 - Microcontroller: Raspberry Pi Pico (standard)
 - Sensor: DHT11 Temperature & Humidity Sensor (3-pin module)
 - Display: 20x4 LCD with I2C Backpack (PCF8574)
 - Environment: C/C++ SDK, CMAKE, and ARM GCC Toolchain
 
-# Pinout Configuration
+## Pinout Configuration
 
-# Software Implementation 
+## Software Implementation 
 The DHT11 uses a proprietary single-bus protocol that is highly timing-sensitive. This project handles the manual handshake:
 
 1. Start Signal: Pulling the bus low for >18ms.
@@ -33,7 +33,7 @@ The DHT11 uses a proprietary single-bus protocol that is highly timing-sensitive
 ## Documentation Style 
 https://github.com/Ernestover/Temp-proj/blob/d8f4e93dd18370ff22872c55550aaa901e07c712/main.c#L242-L255
 
-# Setup & Build 
+## Setup & Build 
 1. Ensure the Pico C/C++ Sdk is installed 
 2. Clone this repositry and create a build directory 
 3. Run Cmake:
