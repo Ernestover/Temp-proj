@@ -92,8 +92,7 @@ int main()
     tight_loop_contents();
     dht_reading reading;
 
-    while(1)
-    {
+    while(1) {
         read_dht(&reading);
         if (reading.humidity >= 0) {
             float fahrenheit = (reading.temp_celsius * 9 / 5) + 32;
