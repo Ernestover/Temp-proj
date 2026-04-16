@@ -81,20 +81,6 @@ int main()
     stdio_init_all();
     i2c_init_pico();
     gpio_init(DHT_PIN);
-    // test GPIO 22 is readable
-    gpio_set_dir(DHT_PIN, GPIO_IN);
-    gpio_pull_up(DHT_PIN);
-    sleep_ms(100);
-    if(gpio_get(DHT_PIN) ==1)
-    {
-        lcd_set_cursor(3,0);
-        lcd_print("GPIO 22 OK       ");
-    }
-    else
-    {
-        lcd_set_cursor(3,0);
-        lcd_print("GPIO 22 FAIL     ");
-    }
     sleep_ms(2000);
     lcd_init();
     sleep_ms(100);
@@ -109,8 +95,7 @@ int main()
     while(1)
     {
         read_dht(&reading);
-        if (reading.humidity >= 0)
-        {
+        if (reading.humidity >= 0) {
             float fahrenheit = (reading.temp_celsius * 9 / 5) + 32;
             
             // Line 1: Clear and Update Humidity 
@@ -125,14 +110,12 @@ int main()
             lcd_set_cursor(3,0);
             lcd_print("Status: Ok       ");
         }
-       else 
-       {
-        lcd_set_cursor(3,0);
-        lcd_print("Status: SENSOR ERR  ");
-       }
-       sleep_ms(2000);
+        else {
+            lcd_set_cursor(3,0);
+            lcd_print("Status: SENSOR ERR  ");
+        }
+        sleep_ms(2000);
     }
-    
     return 0;
 }
 
@@ -145,7 +128,7 @@ int main()
  */
 void i2c_init_pico(void) 
 {
-    i2c_init(I2C_PORT, 50000); // 100 kHz
+    i2c_init(I2C_PORT, 50000); // 50 kHz
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
     gpio_pull_up(I2C_SDA);
@@ -200,6 +183,7 @@ void lcd_send_data(uint8_t data)
     lcd_send_nibble(data & 0xF0, LCD_RS);        // high nibble, RS=1
     lcd_send_nibble((data << 4) & 0xF0, LCD_RS); // low nibble, RS=1
 }
+
 /**
  * @brief Executes the initialization sequence for 20x4 LCD.
  * Sets the display to 4-bit mode, enables the display, clears existing 
@@ -233,8 +217,7 @@ void lcd_init(void)
  */
 void lcd_print(const char *text) 
 {
-    while (*text) 
-    {
+    while (*text) {
         lcd_send_data(*text++);
     }
 }
@@ -321,8 +304,7 @@ void read_dht(dht_reading *result)
         result -> humidity = (float)data[0];
         result -> temp_celsius = (float)data[2];
     }
-    else 
-    {
+    else {
         result -> humidity = -1;
         result -> temp_celsius = -100;
     }
