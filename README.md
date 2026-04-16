@@ -18,6 +18,7 @@ This project demonstrates low-level hardware communication using the Raspberry P
 - Environment: C/C++ SDK, CMAKE, and ARM GCC Toolchain
 
 ## Pinout Configuration
+https://github.com/Ernestover/Temp-proj/blob/c172506dc2b0ea041a5ef3eacf8a0525c9a61a37/main.c#L15-L31
 
 ## Software Implementation 
 The DHT11 uses a proprietary single-bus protocol that is highly timing-sensitive. This project handles the manual handshake:
