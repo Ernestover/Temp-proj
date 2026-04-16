@@ -2,6 +2,11 @@
 # Raspberry Pi Pico: Real-Time Environment Monitor
 A high-precision C-based embedded system that interfaces a Raspberry Pi Pico with a DHT11 sensor and a 20x4 I2C LCD to provide live temperature and humidity telemetry.
 
+
+https://github.com/user-attachments/assets/525ec1e4-00d9-480d-aec8-3f7a6e5b54b6
+
+
+
 ## Overview
 This project demonstrates low-level hardware communication using the Raspberry Pi Pico C/C++ SDK. It features a custom implementation of the DHT11 "One-Wire" protocol and I2C communication to drive a 20x4 character display via a PCF8574 GPIO expander.
 
